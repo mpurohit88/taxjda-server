@@ -33,7 +33,17 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage, limits: { fileSize: 100000000 } });
 
-app.use('/api/upload', upload.any(), function (req, res, nex) {
+let storage = multer.memoryStorage(); //you might need to change this, check multer docs
+
+let mult = multer({ //you might need to change this, check multer docs
+  storage: storage,
+  limits: {
+    fileSize: 100000000
+  }
+}).fields([{ name: "file" }]);
+
+
+app.use('/api/upload', mult.any(), function (req, res, nex) {
   try {
     console.log("uploaded....");
     res.send("uploaded"); // Set disposition and send it.
