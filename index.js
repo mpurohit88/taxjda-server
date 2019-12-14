@@ -31,7 +31,7 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage, limits: { fileSize: 100000000 } });
 
 app.use('/api/upload', upload.any(), function (req, res, nex) {
   try {
