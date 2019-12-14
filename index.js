@@ -8,9 +8,8 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-app.use(bodyParser.json());
 app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 app.use(cors());
 
@@ -21,7 +20,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/', express.static(path.join(__dirname, 'build')));
 app.use('/build', express.static(path.join(__dirname, 'build')));
 
-app.use('/api/upload', function (req, res, nex) {
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, './');
+  },
+  filename: function (req, file, callback) {
+    callback(null, file.originalname.split('.')[0] + "_" + Date.now() + '.' + file.originalname.split('.')[1]);
+  }
+});
+
+const upload = multer({ storage: storage });
+
+app.use('/api/upload', upload.any(), function (req, res, nex) {
   try {
     console.log("uploaded....");
     res.send("uploaded"); // Set disposition and send it.
