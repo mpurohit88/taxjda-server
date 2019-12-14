@@ -38,7 +38,7 @@ app.use(function (error, req, res, next) {
   res.status(error.statusCode).send("error");
 });
 
-let port = 5000;
+let port = process.env.PORT || 5000;
 
 app.set('port', port);
 
