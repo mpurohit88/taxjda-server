@@ -4,6 +4,8 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 const cors = require('cors');
+const fs = require('fs');
+
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -33,19 +35,16 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage, limits: { fileSize: 100000000 } });
 
-let storage1 = multer.memoryStorage(); //you might need to change this, check multer docs
-
-let mult = multer({ //you might need to change this, check multer docs
-  storage: storage1,
-  limits: {
-    fileSize: 100000000
-  }
-}).fields([{ name: "file" }]);
-
-
-app.use('/api/upload', mult.any(), function (req, res, nex) {
+app.use('/api/upload', function (req, res, nex) {
   try {
     console.log("uploaded....");
+
+    let base64Image = req.body.file.split(';base64,').pop();
+
+    fs.writeFile('image.pdf', base64Image, { encoding: 'base64' }, function (err) {
+      console.log('File created');
+    });
+
     res.send("uploaded"); // Set disposition and send it.
   } catch (error) {
     next(error);
@@ -60,7 +59,7 @@ app.use(function (error, req, res, next) {
   res.status(error.statusCode).send("error");
 });
 
-let port = process.env.PORT || 6000;
+let port = process.env.PORT || 5000;
 
 app.set('port', port);
 
