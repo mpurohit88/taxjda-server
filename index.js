@@ -35,11 +35,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage, limits: { fileSize: 100000000 } });
 
-app.use('/api/upload', function (req, res, nex) {
+app.use('/api/upload', function (req, res, next) {
   try {
-    console.log("uploaded....");
+    console.log("uploaded....", req.body.file.name);
 
-    let base64Image = req.body.file.split(';base64,').pop();
+    let base64Image = req.body.file.data.split(';base64,').pop();
 
     fs.writeFile('image.pdf', base64Image, { encoding: 'base64' }, function (err) {
       console.log('File created');
