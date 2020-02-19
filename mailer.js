@@ -3,7 +3,7 @@ sgMail.setApiKey('');
 
 let contactUsEmail = (body) => {
     const msg = {
-        to: 'mpurohit88@gmail.com', //'info@cajaindhingra.com',
+        to: 'info@cajaindhingra.com',
         from: {
             email: "info@cajaindhingra.com",
             name: "cajaindhingra"
