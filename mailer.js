@@ -10,7 +10,7 @@ let contactUsEmail = (body) => {
         },
         subject: body.subject,
         text: body.message,
-        html: 'Subject: ' + body.subject + ' Message: ' + body.message + ' mobileNo: ' + body.phone + ' email address: ' + body.email + ' name: ' + body.name,
+        html: 'Subject: ' + body.subject + ' <br />Message: ' + body.message + ' <br />mobileNo: ' + body.phone + ' <br />email address: ' + body.email + ' <br />name: ' + body.name,
     };
     try {
         sgMail.send(msg);
